@@ -1,4 +1,4 @@
-import API from "../API";
+import API from "../apiSettings";
 import {useState, useEffect} from "react";
 
 const initialState = {
@@ -9,9 +9,11 @@ const initialState = {
 };
 
 export const useHomeFetch = () => {
+    const [searchTerm, setSearchTerm] = useState('');
     const [state, setState] = useState(initialState);
     const[loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+
 
     const fetchMovies = async (page, searchTerm='')=>{
         try {
@@ -33,7 +35,8 @@ export const useHomeFetch = () => {
     };
     // Initial Render
     useEffect(()=>{
-        fetchMovies(1)
-    }, []);
-    return{state: state, loading, error }
+        setState(initialState);
+        fetchMovies(1, searchTerm)
+    }, [searchTerm]);
+    return{state: state, loading, error, searchTerm, setSearchTerm }
 }
